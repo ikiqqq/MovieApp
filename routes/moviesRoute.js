@@ -1,0 +1,20 @@
+const express = require('express')
+const router = express.Router()
+const movies = require('../controllers/moviesControllers')
+const auth = require('../middlewares/authentication')
+const author = require('../middlewares/authorization')
+const uploadPoster = require('../middlewares/uploadPoster')
+
+router.post("/", auth, author.authAdmin, uploadPoster("poster"), movies.postMovie)  
+router.get("/:id", movies.getOneMovie)
+router.get("/", movies.getAllMovies)
+router.get("/genre/:name", movies.getAllMoviesByGenre)
+router.get("/listgenre/:id", movies.getAllGenreByMovieId)
+router.get("/artist/:id", movies.getAllMoviesByArtistId)
+router.get("/listartist/:id", movies.getAllArtistByMovieId)
+router.get("/tag/:id", movies.getAllMovieByTagId)
+router.get("/listtag/:id", movies.getAllTagByMovieId)
+router.put("/:id", auth, author.authAdmin, uploadPoster("poster"), movies.updateMovies)
+router.delete("/:id", auth, author.authAdmin, movies.deleteMovies)
+
+module.exports = router
